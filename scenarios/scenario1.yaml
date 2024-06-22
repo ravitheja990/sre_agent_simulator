@@ -1,0 +1,10 @@
+cluster_name: main-cluster
+namespace: default
+pods:
+  - name: frontend-pod-abc123
+    status: Running
+    restarts: 3
+    age: 3d
+logs:
+  - name: log-1
+    content: "Error: Out of memory"
