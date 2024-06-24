@@ -1,0 +1,8 @@
+summary: |
+  A financial trading platform deployed to Azure.
+  Has a SQL Server database, a backend, and a frontend all running in a single Kubernetes cluster.
+  Has an Elasticsearch agent in the same Kubernetes cluster.
+  Has an Elasticsearch API where logs for all systems are served and queryable.
+  The system has been running from date 2024-05-01 to 2024-05-10 for all services, meaning logs and metadata should be available from them.
+  The services have experienced outages due to a network partition. These issues should be shown in tool calls to the Kubernetes tools as well as Elasticsearch logs. The logs show network partition events and service unavailability.
+  There are no other problems in this environment.

@@ -1,0 +1,8 @@
+summary: |
+  A social media platform deployed to AWS.
+  Has a MongoDB database, a backend, and a frontend all running in a single Kubernetes cluster.
+  Has a Prometheus agent in the same Kubernetes cluster.
+  Has a Prometheus API where logs for all systems are served and queryable.
+  The system has been running from date 2024-06-01 to 2024-06-10 for all services, meaning logs and metadata should be available from them.
+  The frontend has experienced high network latency issues. These issues should be shown in tool calls to the Kubernetes tools as well as Prometheus logs. The logs show intermittent high latency and timeout errors.
+  There are no other problems in this environment.

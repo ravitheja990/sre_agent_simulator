@@ -1,0 +1,8 @@
+summary: |
+  A content management system deployed to Azure.
+  Has a MySQL database, a backend, and a frontend all running in a single Kubernetes cluster.
+  Has an Elasticsearch agent in the same Kubernetes cluster.
+  Has an Elasticsearch API where logs for all systems are served and queryable.
+  The system has been running from date 2024-05-15 to 2024-05-25 for all services, meaning logs and metadata should be available from them.
+  The database has been running low on disk space. These issues should be shown in tool calls to the Kubernetes tools as well as Elasticsearch logs. The logs show warnings about disk space usage and potential data loss.
+  There are no other problems in this environment.

@@ -1,0 +1,8 @@
+summary: |
+  An online gaming platform deployed to AWS.
+  Has a Redis database, a backend, and a frontend all running in a single Kubernetes cluster.
+  Has a Prometheus agent in the same Kubernetes cluster.
+  Has a Prometheus API where logs for all systems are served and queryable.
+  The system has been running from date 2024-06-20 to 2024-06-30 for all services, meaning logs and metadata should be available from them.
+  The backend has been experiencing memory leaks causing system slowdowns. These issues should be shown in tool calls to the Kubernetes tools as well as Prometheus logs. The logs show gradual memory usage increase and eventual slowdowns.
+  There are no other problems in this environment.
