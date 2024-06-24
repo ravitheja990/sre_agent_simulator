@@ -19,4 +19,4 @@ def main():
         print(logs.output)
 
 if __name__ == "__main__":
-    main()
+        main()
