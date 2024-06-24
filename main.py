@@ -1,17 +1,22 @@
-from fake_toolbox.py import FakeToolbox
-from scenario_generator import generate_scenario, load_scenario
+from fake_toolbox import FakeToolbox
+from scenario_generator import generate_scenario_from_high_level_summary, load_high_level_summary
+import os
 
 def main():
-    base_scenario = load_scenario('scenarios/scenario1.yaml')
-    scenario = generate_scenario(base_scenario)
+    summary_files = [f for f in os.listdir('scenarios/') if f.endswith(('.yaml', '.yml', '.md'))]
     
-    toolbox = FakeToolbox(scenario)
-    
-    pod_details = toolbox.get_tool("get_pod_details")("main-cluster", "frontend-pod-abc123", "default")
-    print(pod_details.output)
-    
-    logs = toolbox.get_tool("get_logs_for_pod")("main-cluster", "frontend-pod-abc123", "default")
-    print(logs.output)
+    for summary_file in summary_files:
+        print(f"Loading high-level summary: {summary_file}")
+        summary = load_high_level_summary(os.path.join('scenarios', summary_file))
+        scenario = generate_scenario_from_high_level_summary(summary)
+        
+        toolbox = FakeToolbox(scenario)
+        
+        pod_details = toolbox.get_tool("get_pod_details")(scenario['cluster_name'], "backend-pod-xyz789", scenario['namespace'])
+        print(pod_details.output)
+        
+        logs = toolbox.get_tool("get_logs_for_pod")(scenario['cluster_name'], "backend-pod-xyz789", scenario['namespace'])
+        print(logs.output)
 
 if __name__ == "__main__":
     main()

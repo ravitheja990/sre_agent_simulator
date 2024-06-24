@@ -1,0 +1,9 @@
+# High-Level Summary
+
+- An e-commerce store deployed to GCP.
+- Has a PostgreSQL, a backend, and a frontend all running in a single Kubernetes cluster.
+- Has a Datadog agent in the same Kubernetes cluster.
+- Has a Datadog API where logs for all systems are served and queryable.
+- The system has been running from date 2024-06-10 to 2024-06-20 for all services, meaning logs and metadata should be available from them.
+- The backend has 3 restarts. These restarts should be shown in tool calls to the Kubernetes tools as well as Datadog logs. The logs show an out of memory problem.
+- There are no other problems in this environment.
