@@ -15,8 +15,9 @@ The SRE Agent Simulator is designed to create synthetic environments for trainin
 ## Usage
 
 ### Setup
-1. **Create and activate a virtual environment**:
+1. **Add GEMINI API KEY and Create and activate a virtual environment**:
     ```bash
+    export GEMINI_API_KEY="enter your API key here"
     python3 -m venv venv
     source venv/bin/activate
     ```
