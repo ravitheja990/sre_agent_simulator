@@ -2,6 +2,7 @@ import os
 import yaml
 import markdown
 from bs4 import BeautifulSoup
+import json
 import google.generativeai as genai
 
 # Configure the Google Gemini API
@@ -36,7 +37,6 @@ def generate_scenario_from_high_level_summary(summary: dict) -> dict:
                 "parts": [
                     "Generate a detailed scenario from the following high-level summary formatted in YAML. "
                     "The output should be in the following YAML format without any Markdown formatting:\n"
-                    "```yaml\n"
                     "cluster_name: <cluster name>\n"
                     "namespace: <namespace>\n"
                     "pods:\n"
@@ -46,8 +46,7 @@ def generate_scenario_from_high_level_summary(summary: dict) -> dict:
                     "    age: <age>\n"
                     "logs:\n"
                     "  - name: <log name>\n"
-                    "    content: <log content>\n"
-                    "```\n\n" + summary_str,
+                    "    content: <log content>\n\n" + summary_str,
                 ],
             },
         ]
@@ -71,31 +70,17 @@ def generate_scenario_from_high_level_summary(summary: dict) -> dict:
     # Debug: Print the cleaned scenario text
     print("Cleaned Scenario Text:\n", scenario_text)
 
-    # Expected scenario structure
-    scenario = {
-        "cluster_name": "main-cluster",
-        "namespace": "default",
-        "pods": [],
-        "logs": []
-    }
+    # Initialize scenario dictionary
+    scenario = {}
 
     # Attempt to parse the scenario text as YAML
     try:
         parsed_scenario = yaml.safe_load(scenario_text)
         
         if isinstance(parsed_scenario, dict):
-            scenario["cluster_name"] = parsed_scenario.get("cluster_name", "main-cluster")
-            scenario["namespace"] = parsed_scenario.get("namespace", "default")
-            scenario["pods"] = parsed_scenario.get("pods", [])
-            scenario["logs"] = parsed_scenario.get("logs", [])
-
-            # Ensure pods and logs are in the correct format
-            for pod in scenario["pods"]:
-                if not all(key in pod for key in ["name", "status", "restarts", "age"]):
-                    raise ValueError("Pod data is incomplete or improperly formatted")
-            for log in scenario["logs"]:
-                if not all(key in log for key in ["name", "content"]):
-                    raise ValueError("Log data is incomplete or improperly formatted")
+            scenario = parsed_scenario
+        else:
+            raise ValueError("Parsed scenario is not a dictionary")
 
     except (yaml.YAMLError, ValueError) as e:
         print("Parsing error:", e)
@@ -119,6 +104,21 @@ def load_high_level_summary(file_path: str) -> dict:
 
 # Example usage
 if __name__ == "__main__":
-    summary = load_high_level_summary("high_level_summary1.yaml")
-    scenario = generate_scenario_from_high_level_summary(summary)
-    print(scenario)
+    summary_files = [f for f in os.listdir('scenarios/') if f.endswith(('.yaml', '.yml', '.md'))]
+    
+    for summary_file in summary_files:
+        print(f"Loading high-level summary: {summary_file}")
+        summary = load_high_level_summary(os.path.join('scenarios', summary_file))
+        scenario = generate_scenario_from_high_level_summary(summary)
+        
+        # Print the scenario as a JSON string for readability
+        print("Generated Scenario:\n", json.dumps(scenario, indent=4))
+
+        # Proceed with the scenario as a dictionary for processing
+        toolbox = FakeToolbox(scenario)
+        
+        pod_details = toolbox.get_tool("get_pod_details")(scenario['cluster_name'], "backend-pod-xyz789", scenario['namespace'])
+        print(pod_details.output)
+        
+        logs = toolbox.get_tool("get_logs_for_pod")(scenario['cluster_name'], "backend-pod-xyz789", scenario['namespace'])
+        print(logs.output)
