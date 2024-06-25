@@ -119,6 +119,6 @@ def load_high_level_summary(file_path: str) -> dict:
 
 # Example usage
 if __name__ == "__main__":
-    summary = load_high_level_summary("high_level_summary1.yaml")  # Replace with your file path
+    summary = load_high_level_summary("high_level_summary1.yaml")
     scenario = generate_scenario_from_high_level_summary(summary)
     print(scenario)
