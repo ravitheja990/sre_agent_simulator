@@ -112,8 +112,16 @@ if __name__ == "__main__":
         scenario = generate_scenario_from_high_level_summary(summary)
         
         # Print the scenario as a JSON string for readability
-        print("Generated Scenario:\n", json.dumps(scenario, indent=4))
-
+        scenario_json_str = json.dumps(scenario, indent=4)
+        print("Generated Scenario:\n", scenario_json_str)
+        
+        # Write the scenario to a JSON file
+        output_file = os.path.join('outputs', f"{os.path.splitext(summary_file)[0]}.json")
+        print("output_file is :: ", output_file)
+        os.makedirs('outputs', exist_ok=True)
+        with open(output_file, 'w') as f:
+            f.write(scenario_json_str)
+        
         # Proceed with the scenario as a dictionary for processing
         toolbox = FakeToolbox(scenario)
         
